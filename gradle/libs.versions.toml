@@ -1,18 +1,19 @@
 [versions]
-agp = "8.10.1"
-kotlin = "2.0.21"
+agp = "9.2.0"
+kotlin = "2.3.21"
 coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
-composeBom = "2026.03.01"
+composeBom = "2026.04.01"
 retrofit = "3.0.0"
 kotlinSerialization = "1.11.0"
 kotlinxConverter = "3.0.0"
 ksp = "2.3.6"
-kotlinxSerializationPlugin = "2.3.20"
+kotlinxSerializationPlugin = "2.3.21"
+hilt = "2.59.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,7 +32,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
-kotlinx-converter = { group = "com.jakewharton.retrofit", name = "converter-kotlinx-serialization", version.ref = "kotlinxConverter" }
+kotlinx-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "kotlinxConverter" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -39,4 +43,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerializationPlugin" }
+kotlin-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
