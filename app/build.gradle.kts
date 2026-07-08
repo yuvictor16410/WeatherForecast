@@ -46,7 +46,11 @@ dependencies {
     implementation(libs.kotlinx.converter)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
 
+    implementation(libs.coil)
+    implementation(libs.coil.network)
+    ksp(libs.kotlin.metadata)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

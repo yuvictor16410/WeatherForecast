@@ -1,9 +1,10 @@
-package com.example.weatherforecast.network
+package com.example.weatherforecast.network.forecast
 
+import com.example.weatherforecast.network.forecast.WeatherResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiServiceDao {
+interface WeatherPredictionDao {
 
     @GET("/v1/forecast")
     suspend fun getWeather(
