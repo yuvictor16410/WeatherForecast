@@ -1,7 +1,7 @@
 package com.example.weatherforecast
 
 import com.example.weatherforecast.network.forecast.WeatherPredictionDao
-import com.example.weatherforecast.network.Repository
+import com.example.weatherforecast.Repository
 import com.example.weatherforecast.network.image.WeatherImageDao
 import dagger.Module
 import dagger.Provides

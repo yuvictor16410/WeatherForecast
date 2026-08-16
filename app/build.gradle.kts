@@ -41,9 +41,9 @@ android {
 
 dependencies {
 
-    implementation(libs.retrofit)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.converter)
+    implementation(libs.retrofit)//network
+    implementation(libs.kotlinx.serialization.json)// network
+    implementation(libs.kotlinx.converter)// network
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.network)
     ksp(libs.kotlin.metadata)
+
+    implementation(project(":network"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

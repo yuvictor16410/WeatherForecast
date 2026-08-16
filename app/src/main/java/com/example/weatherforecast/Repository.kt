@@ -1,6 +1,7 @@
-package com.example.weatherforecast.network
+package com.example.weatherforecast
 
-import com.example.weatherforecast.feature.WeatherScreenViewState
+import com.example.weatherforecast.feature.Content
+import com.example.weatherforecast.model.City
 import com.example.weatherforecast.network.forecast.WeatherPredictionDao
 import com.example.weatherforecast.network.forecast.WeatherResponseDto
 import com.example.weatherforecast.network.image.WeatherImageDao
@@ -15,30 +16,30 @@ class Repository @Inject constructor(
     private val imageDao: WeatherImageDao,
 ){
 
-    suspend fun getWeather(lat: Double, lon: Double): WeatherScreenViewState {
+    suspend fun getWeather(city: City): Content {
         val weather: WeatherResponseDto = forecastDao.getWeather(
-            latitude = lat,
-            longitude = lon,
+            latitude = city.latitude,
+            longitude = city.longitude,
             daily = DAILY,
             timezone = TIMEZONE,
             forecastDays = FORECAST_DAYS,
 
         )
 
-        val code = weather.daily.weatherCode.first()
-
         val imageMap = getImage()
 
-        val imageDto: WeatherImageDto = imageMap.getValue(code.toString())
+        val states = weather.daily.weatherCode.mapIndexed { index, item ->
+            val imageDto: WeatherImageDto = imageMap.getValue(item.toString())
+            Content.WeatherScreenViewState(
+                imageUrl = imageDto.day.image.replace("http","https"),
+                maxTemperature = weather.daily.maxTemperature[index].roundToInt(),
+                minTemperature = weather.daily.minTemperature[index].roundToInt(),
+                date = weather.daily.time[index],
+                city = city.name
+            )
+        }
 
-        val state = WeatherScreenViewState(
-            imageUrl = imageDto.day.image.replace("http", "https"),
-            maxTemperature = weather.daily.maxTemperature.first().roundToInt(),
-            minTemperature = weather.daily.minTemperature.first().roundToInt(),
-            city = "Wellington"
-        )
-
-        return state
+        return Content(states = states)
     }
 
     suspend fun getImage(): Map<String, WeatherImageDto> {
@@ -52,7 +53,7 @@ class Repository @Inject constructor(
 
         private const val TIMEZONE = "auto"
 
-        private const val FORECAST_DAYS = 1
+        private const val FORECAST_DAYS = 3
 
 
     }

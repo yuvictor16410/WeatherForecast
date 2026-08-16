@@ -5,7 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherforecast.network.Repository
+import com.example.weatherforecast.model.Cities
+import com.example.weatherforecast.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class WeatherScreenViewModel @Inject constructor(
 
     init{
         viewModelScope.launch {
-            viewState.value = repo.getWeather(41.2866, 174.7756)
+            viewState.value = repo.getWeather(city = Cities.wellington)
 
         }
     }

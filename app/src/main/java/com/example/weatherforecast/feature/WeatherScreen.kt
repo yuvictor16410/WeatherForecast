@@ -5,8 +5,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,8 +38,8 @@ fun WeatherScreen(
     when(val state = viewModel.viewState.value){
         is LoadingViewState -> LoadingScreen(modifier = Modifier)
 
-        is WeatherScreenViewState -> {
-            WeatherContent(modifier = modifier, state = state)
+        is Content -> {
+            WeatherContent(modifier = modifier, states = state.states)
         }
     }
 
@@ -72,7 +74,7 @@ private fun LoadingScreen(
 @Composable
 fun WeatherContent(
     modifier: Modifier,
-    state: WeatherScreenViewState
+    states: List<Content.WeatherScreenViewState>
 ){
     Column(
         modifier = modifier.fillMaxSize(),
@@ -80,45 +82,78 @@ fun WeatherContent(
     ){
         Spacer(modifier = Modifier.size(128.dp))
 
-
-        AsyncImage(
-            modifier = Modifier.size(300.dp),
-            model = state.imageUrl,
-            contentDescription = null,
-
-        )
-
-
-//        Image(
-//            painter = painterResource(R.drawable.sun),
-//            contentDescription = null
-//        )
+        CurrentWeather(states.first())
 
         Spacer(modifier = Modifier.size(64.dp))
 
-        Text(
-            text = "${state.minTemperature}°C/${state.maxTemperature}°C",
-            fontSize = 32.sp,
-            fontFamily = FontFamily.Monospace,
-            fontWeight = FontWeight.W900,
-            color = Color.White
-        )
 
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Text(
-            text = state.city,
-            fontSize = 24.sp,
-            fontFamily = FontFamily.Monospace,
-            fontWeight = FontWeight.W900,
-            color = Color.White
-        )
-
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ){
+            states.forEach {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "${it.date}",
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.W900,
+                        color = Color.White
+                    )
 
 
+                    AsyncImage(
+                        modifier = Modifier.size(100.dp),
+                        model = it.imageUrl,
+                        contentDescription = null,
+                    )
 
-
+                    Text(
+                        text = "${it.minTemperature}°C/${it.maxTemperature}°C",
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.W900,
+                        color = Color.White
+                    )
+                }
+            }
+        }
     }
+}
+
+@Composable
+private fun CurrentWeather(todayState: Content.WeatherScreenViewState){
+
+    // open soucr lib
+    //
+    AsyncImage(
+        modifier = Modifier.size(300.dp),
+        model = todayState.imageUrl,
+        contentDescription = null,
+
+        )
+
+    Spacer(modifier = Modifier.size(64.dp))
+
+    Text(
+        text = "${todayState.minTemperature}°C/${todayState.maxTemperature}°C",
+        fontSize = 32.sp,
+        fontFamily = FontFamily.Monospace,
+        fontWeight = FontWeight.W900,
+        color = Color.White
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        text = todayState.city,
+        fontSize = 24.sp,
+        fontFamily = FontFamily.Monospace,
+        fontWeight = FontWeight.W900,
+        color = Color.White
+    )
 }
 
 @Preview
@@ -126,11 +161,52 @@ fun WeatherContent(
 fun WeatherScreenPreview(){
     WeatherContent(
         modifier = Modifier.fillMaxSize().background(Color.Black),
-        state = WeatherScreenViewState(
-            imageUrl = "http://openweathermap.org/img/wn/03d@2x.png",
-            maxTemperature = 20,
-            minTemperature = 10,
-            city = "Wellington"
+        states = listOf(
+            Content.WeatherScreenViewState(
+                imageUrl = "http://openweathermap.org/img/wn/03d@2x.png",
+                maxTemperature = 20,
+                minTemperature = 10,
+                date = "12/07/2026",
+                city = "Wellington"
+            ),
+
+            Content.WeatherScreenViewState(
+                imageUrl = "http://openweathermap.org/img/wn/03d@2x.png",
+                maxTemperature = 20,
+                minTemperature = 10,
+                date = "12/07/2026",
+                city = "Wellington"
+            ),
+
+            Content.WeatherScreenViewState(
+                imageUrl = "http://openweathermap.org/img/wn/03d@2x.png",
+                maxTemperature = 20,
+                minTemperature = 10,
+                date = "12/07/2026",
+                city = "Wellington"
+            )
         )
+
     )
+}
+
+
+// Example of dependency injection without hilt
+class Car(val engine: Engine){
+    fun StartCar(){
+        engine.startEngine()
+        println("Car Started")
+    }
+}
+
+fun main(){
+    val engine = Engine()
+    val car = Car(engine)
+    car.StartCar()
+}
+
+class Engine(){
+    fun startEngine(){
+        println("Engine Started")
+    }
 }
