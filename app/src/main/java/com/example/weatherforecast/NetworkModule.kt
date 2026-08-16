@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -20,15 +21,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideApiService(): WeatherPredictionDao{
-
-        val json = Json { ignoreUnknownKeys = true }
-
-        return Retrofit
-            .Builder()
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("https://api.open-meteo.com")
-            .build()
-            .create(WeatherPredictionDao::class.java)
+        return getRetrofit("https://api.open-meteo.com").create(WeatherPredictionDao::class.java)
 
 
     }
@@ -36,29 +29,17 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideImageDao(): WeatherImageDao{
+        return getRetrofit("https://gist.githubusercontent.com/").create(WeatherImageDao::class.java)
+    }
+
+    private fun getRetrofit (url: String): Retrofit {
 
         val json = Json { ignoreUnknownKeys = true }
-
         return Retrofit
             .Builder()
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("https://gist.githubusercontent.com/")
+            .baseUrl(url)
             .build()
-            .create(WeatherImageDao::class.java)
-
-
-    }
-
-    @Provides
-    @Singleton
-    fun provideRepository(
-        predictionDao: WeatherPredictionDao,
-        imageDao: WeatherImageDao,
-    ): Repository {
-        return Repository(
-            forecastDao = predictionDao,
-            imageDao = imageDao,
-        )
     }
 
 

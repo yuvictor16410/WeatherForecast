@@ -14,9 +14,9 @@ import kotlin.math.roundToInt
 class Repository @Inject constructor(
     private val forecastDao: WeatherPredictionDao,
     private val imageDao: WeatherImageDao,
-){
+): IRepository{
 
-    suspend fun getWeather(city: City): Content {
+    override suspend fun getWeather(city: City): Content {
         val weather: WeatherResponseDto = forecastDao.getWeather(
             latitude = city.latitude,
             longitude = city.longitude,

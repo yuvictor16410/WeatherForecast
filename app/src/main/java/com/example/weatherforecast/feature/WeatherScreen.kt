@@ -95,32 +95,53 @@ fun WeatherContent(
                     modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "${it.date}",
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.W900,
-                        color = Color.White
-                    )
-
-
-                    AsyncImage(
-                        modifier = Modifier.size(100.dp),
-                        model = it.imageUrl,
-                        contentDescription = null,
-                    )
-
-                    Text(
-                        text = "${it.minTemperature}°C/${it.maxTemperature}°C",
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.W900,
-                        color = Color.White
-                    )
+                    WeatherCard(it)
                 }
             }
         }
     }
+}
+
+@Composable
+private fun CardRow(states: List<Content.WeatherScreenViewState>){
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        states.forEach {
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WeatherCard(it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeatherCard(state: Content.WeatherScreenViewState){
+    Text(
+        text = "${state.date}",
+        fontSize = 16.sp,
+        fontFamily = FontFamily.Monospace,
+        fontWeight = FontWeight.W900,
+        color = Color.White
+    )
+
+
+    AsyncImage(
+        modifier = Modifier.size(100.dp),
+        model = state.imageUrl,
+        contentDescription = null,
+    )
+
+    Text(
+        text = "${state.minTemperature}°C/${state.maxTemperature}°C",
+        fontSize = 16.sp,
+        fontFamily = FontFamily.Monospace,
+        fontWeight = FontWeight.W900,
+        color = Color.White
+    )
 }
 
 @Composable
